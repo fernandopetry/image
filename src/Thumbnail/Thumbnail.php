@@ -1,6 +1,7 @@
 <?php
 
 namespace Petry\Image\Thumbnail;
+use Petry\Image\Canvas;
 
 
 class Thumbnail
@@ -118,7 +119,7 @@ class Thumbnail
     {
         $save = $this->getPathThumbnail();
 
-        $thumb = \Canvas::Instance();
+        $thumb = Canvas::Instance();
         $thumb->carrega($this->pathSourceImage);
         $thumb->redimensiona($this->width, $this->heigth, 'crop');
         $thumb->grava($save);
