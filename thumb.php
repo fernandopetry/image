@@ -8,3 +8,4 @@ $thumb = new Thumbnail($img,$path,200,150);
 $thumb->generate();
 
 $thumb->show();
+//$thumb->showDirect($img);

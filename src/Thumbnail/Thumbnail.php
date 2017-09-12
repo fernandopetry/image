@@ -119,6 +119,9 @@ class Thumbnail
     {
         $save = $this->getPathThumbnail();
 
+        // não gerar o thumbnail caso já exista
+        if(file_exists($save)) return $save;
+
         $thumb = Canvas::Instance();
         $thumb->carrega($this->pathSourceImage);
         $thumb->redimensiona($this->width, $this->heigth, 'crop');
@@ -176,8 +179,24 @@ class Thumbnail
      * Exibi a imagem, para este metodo o php não pode ter enviado nenhum header antes
      */
     public function show(){
-        $extension = $this->getExtension();
-        $image = $this->getPathThumbnail();
+//        $extension = $this->getExtension();
+//        $image = $this->getPathThumbnail();
+//        header('Content-type:image/'.$extension);
+//        readfile($image);
+        $this->showDirect($this->getPathThumbnail());
+    }
+
+    /**
+     * Exibi uma imagem diretamente sem redimensionar
+     * @param $image
+     * @throws \Exception
+     */
+    public function showDirect($image){
+        if(!file_exists($image)){
+            throw new \Exception("Arquivo de imagem não encontrada!",E_USER_ERROR);
+        }
+
+        $extension = pathinfo($image, PATHINFO_EXTENSION);
         header('Content-type:image/'.$extension);
         readfile($image);
     }
