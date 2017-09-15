@@ -10,7 +10,7 @@ use \Petry\Image\Thumbnail\Thumbnail;
 $path = dirname(__FILE__) . '/thumb';
 $img = dirname(__FILE__) . '/cao.jpg';
 
-$thumb = new Thumbnail($img,$path,200,150);
+$thumb = new Thumbnail($img,$path,200,150,'Meu Cachorro');
 $thumb->generate();
 
 echo '<h1>Teste Thumbnail</h1>';
@@ -18,6 +18,7 @@ echo '<hr>';
 
 echo 'Path Thumb: ' . $path . '<br>';
 echo 'Path Img: ' . $img . '<br>';
+echo 'Name Img: ' . $thumb->getThumbnailName() . '<br>';
 echo '<hr>';
 
 var_dump($thumb,$thumb->getPathThumbnail());
