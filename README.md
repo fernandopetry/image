@@ -41,7 +41,7 @@ $img = dirname(__FILE__) . '/cao.jpg';
 $path = dirname(__FILE__) . '/thumb';
 
 // inicializa o thumbnail
-$thumb = new Thumbnail($img,$path,200,150);
+$thumb = new Thumbnail($img,$path,200,150,'opcional nome da imagem');
 $thumb->generate();
 
 // Path completo do thumbnail
@@ -49,4 +49,7 @@ $thumb->getPathThumbnail();
 
 // Imagem no formato base64
 $thumb->getBase64();
+
+// Nome do thumbnail
+$thumb->getThumbnailName();
 ```
