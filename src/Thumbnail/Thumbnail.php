@@ -155,6 +155,11 @@ class Thumbnail
         }
     }
 
+    public function setThumbnailName($thumbnailName){
+        $this->thumbnailName = $thumbnailName;
+        return $this;
+    }
+
     /**
      * @return string
      */
