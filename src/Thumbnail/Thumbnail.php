@@ -1,12 +1,11 @@
 <?php
-
 namespace Petry\Image\Thumbnail;
 
 use Petry\Image\Canvas;
 
-
 class Thumbnail
 {
+
     /**
      * Path completo da imagem
      * @var string
@@ -139,7 +138,7 @@ class Thumbnail
      */
     public function getPathThumbnail()
     {
-        return $this->pathDestination . DIRECTORY_SEPARATOR . $this->getThumbnailName();
+        return $this->pathDestination . DIRECTORY_SEPARATOR . $this->getThumbnailName() . '.' . $this->getExtension();
     }
 
     /**
@@ -147,15 +146,32 @@ class Thumbnail
      */
     private function setNameThumb()
     {
-        $extension = $this->getExtension();
         if ($this->customName) {
-            $this->thumbnailName = $this->customName . '.' . $extension;
+            $this->setThumbnailName($this->customName);
         } else {
-            $this->thumbnailName = md5($this->pathSourceImage . $this->width . $this->height) . '.' . $extension;
+            $this->setThumbnailName(md5($this->pathSourceImage . $this->width . $this->height));
         }
     }
 
-    public function setThumbnailName($thumbnailName){
+    /**
+     * Define o nome do thumbnail a partir do conteúdo
+     * 
+     * @return $this
+     */
+    public function setThumbnailNameByContent()
+    {
+        $this->setThumbnailName(md5(file_get_contents($this->pathSourceImage) . $this->width . $this->height));
+        return $this;
+    }
+
+    /**
+     * Define o nome do thumbnail
+     * 
+     * @param $thumbnailName
+     * @return $this
+     */
+    public function setThumbnailName($thumbnailName)
+    {
         $this->thumbnailName = $thumbnailName;
         return $this;
     }
@@ -168,29 +184,26 @@ class Thumbnail
         return $this->thumbnailName;
     }
 
-
     /**
      * Tenta gerar a imagem Thumbnail
      * @return bool
      */
     private function generateThumb()
     {
-        $save = $this->getPathThumbnail();
+        $path = $this->getPathThumbnail();
 
-        // não gerar o thumbnail caso já exista
-        if (file_exists($save)) return $save;
+        if (!file_exists($path)) {
+            $thumb = Canvas::Instance();
+            $thumb->carrega($this->pathSourceImage);
+            $thumb->redimensiona($this->width, $this->height, 'crop');
+            $thumb->grava($path);
 
-        $thumb = Canvas::Instance();
-        $thumb->carrega($this->pathSourceImage);
-        $thumb->redimensiona($this->width, $this->height, 'crop');
-        $thumb->grava($save);
-
-        if (file_exists($save)) {
-            return true;
-        } else {
-            $this->erroInfo = 'Não possível gerar o thumb (canvas)';
-            return false;
+            if (!file_exists($path)) {
+                $this->erroInfo = 'Não possível gerar o thumb (canvas)';
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -208,17 +221,8 @@ class Thumbnail
         if (!$this->verifyWritable())
             return false;
 
-
-        $pathImage = $this->getPathThumbnail();
-
-        if (file_exists($pathImage)) {
-            return $pathImage;
-        } else {
-            if (!$this->generateThumb())
-                return false;
-
-            return $pathImage;
-        }
+        $thumb = $this->generateThumb();
+        return $thumb;
     }
 
     /**
@@ -261,5 +265,4 @@ class Thumbnail
         header('Content-type:image/' . $extension);
         readfile($image);
     }
-
 }
