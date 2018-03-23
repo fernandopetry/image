@@ -138,7 +138,7 @@ class Thumbnail
      */
     public function getPathThumbnail()
     {
-        return $this->pathDestination . DIRECTORY_SEPARATOR . $this->getThumbnailName() . '.' . $this->getExtension();
+        return $this->pathDestination . DIRECTORY_SEPARATOR . $this->getThumbnailName();
     }
 
     /**
@@ -181,7 +181,7 @@ class Thumbnail
      */
     public function getThumbnailName()
     {
-        return $this->thumbnailName;
+        return $this->thumbnailName . '.' . $this->getExtension();
     }
 
     /**
