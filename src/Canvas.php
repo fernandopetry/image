@@ -1041,8 +1041,8 @@ class Canvas
             $extensao_destino = strtolower($pathinfo['extension']);
 
             // valida diretório
-            if (!is_dir($dir_destino)) {
-                trigger_error('Diretório de destino inválido ou inexistente', E_USER_ERROR);
+            if (!file_exists($dir_destino)) {
+                trigger_error('Diretório de destino inválido ou inexistente: ' . $dir_destino, E_USER_ERROR);
             }
         }
 
