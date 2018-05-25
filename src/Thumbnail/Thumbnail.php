@@ -138,7 +138,7 @@ class Thumbnail
      */
     public function getPathThumbnail()
     {
-        return $this->pathDestination . DIRECTORY_SEPARATOR . $this->getThumbnailName();
+        return $this->pathDestination . (substr($this->pathDestination, -1) != DIRECTORY_SEPARATOR ? DIRECTORY_SEPARATOR : '') . $this->getThumbnailName();
     }
 
     /**
