@@ -1037,7 +1037,7 @@ class Canvas
         // dados do arquivo de destino
         if ($destino) {
             $pathinfo         = pathinfo($destino);
-            $dir_destino      = $pathinfo['dirname'];
+            $dir_destino      = $pathinfo['dirname'] . DIRECTORY_SEPARATOR;
             $extensao_destino = strtolower($pathinfo['extension']);
 
             // valida diretório
