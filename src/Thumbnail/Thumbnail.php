@@ -49,6 +49,12 @@ class Thumbnail
     private $customName = false;
 
     /**
+     * Tipo de geração do arquivo
+     * @var string
+     */
+    private $generateType = 'crop';
+
+    /**
      * Thumbnail constructor.
      * @param $pathSourceImage Path completo da imagem
      * @param $pathDestination Path completo de onde a thumb ficará salva
@@ -165,6 +171,18 @@ class Thumbnail
     }
 
     /**
+     * Define o tipo de geração do arquivo
+     *
+     * @param $generateType
+     * @return $this
+     */
+    public function setGenerateType($generateType)
+    {
+        $this->generateType = $generateType;
+        return $this;
+    }
+
+    /**
      * Define o nome do thumbnail
      * 
      * @param $thumbnailName
@@ -195,7 +213,7 @@ class Thumbnail
         if (!file_exists($path)) {
             $thumb = Canvas::Instance();
             $thumb->carrega($this->pathSourceImage);
-            $thumb->redimensiona($this->width, $this->height, 'crop');
+            $thumb->redimensiona($this->width, $this->height, $this->generateType);
             $thumb->grava($path);
 
             if (!file_exists($path)) {
